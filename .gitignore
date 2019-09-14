@@ -22,4 +22,7 @@ yarn-error.log*
 *.sln
 *.sw?
 
+*.log
+*.pot
 *.pyc
+__pycache__/

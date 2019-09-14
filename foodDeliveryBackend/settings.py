@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'oauth2_provider',
     'corsheaders',
+    'foodDeliveryBackend.apps.foods',
+    'foodDeliveryBackend.apps.users',
+    'foodDeliveryBackend.apps.restaurants',
 ]
 
 MIDDLEWARE = [
@@ -127,6 +130,13 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+# CORS_ORIGIN_WHITELIST = (
+#     'localhost:3000',
+# )
+
+AUTH_USER_MODEL = 'users.User'
+APPEND_SLASH = False
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
