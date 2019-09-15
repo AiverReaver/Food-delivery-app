@@ -54,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'oauth2_provider.middleware.OAuth2TokenMiddleware',
 ]
 
 ROOT_URLCONF = 'foodDelivery.urls'
@@ -146,6 +147,11 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     )
 }
+
+# AUTHENTICATION_BACKENDS = (
+
+#     'oauth2_provider.backends.OAuth2Backend',
+# )
 
 OAUTH2_PROVIDER = {
     # this is the list of available scopes
