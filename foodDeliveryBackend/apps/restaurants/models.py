@@ -1,5 +1,5 @@
 from django.db import models
-from foodDeliveryBackend.apps.users.models import User
+from apps.users.models import User
 
 
 class Restaurant(models.Model):
