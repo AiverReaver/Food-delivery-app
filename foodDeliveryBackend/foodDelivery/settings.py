@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'oauth2_provider',
     'corsheaders',
+    'django_seed',
     'apps.foods',
     'apps.users',
     'apps.restaurants'
@@ -137,7 +138,6 @@ CORS_ORIGIN_ALLOW_ALL = True
 # )
 
 AUTH_USER_MODEL = 'users.User'
-APPEND_SLASH = False
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
