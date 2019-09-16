@@ -6,7 +6,8 @@ from rest_framework.response import Response
 
 
 class RestaurantViewSet(viewsets.ModelViewSet):
-    queryset = Restaurant.objects.all()
+    queryset = Restaurant.objects.all().prefetch_related(
+        'categories', 'categories__foods')
     serializer_class = RestaurantSerializer
 
     def create(self, request):

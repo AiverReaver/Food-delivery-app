@@ -13,6 +13,7 @@ class FoodCategorySerializer(serializers.ModelSerializer):
 
 
 class FoodSerializer(serializers.ModelSerializer):
+
     def create(self, validated_data):
         return Food.objects.create(**validated_data)
 
