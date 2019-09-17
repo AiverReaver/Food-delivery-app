@@ -2,6 +2,7 @@ autopep8==1.4.4
 certifi==2019.9.11
 chardet==3.0.4
 Django==2.2.5
+django-querycount==0.7.0
 django-cors-middleware==1.4.0
 django-oauth-toolkit==1.2.0
 djangorestframework==3.10.3

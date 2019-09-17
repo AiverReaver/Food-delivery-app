@@ -10,6 +10,12 @@ class RestaurantViewSet(viewsets.ModelViewSet):
         'categories', 'categories__foods')
     serializer_class = RestaurantSerializer
 
+    def list(self, request):
+        queryset = Restaurant.objects.all()
+        serializer = RestaurantSerializer(
+            queryset, many=True, fields=('id', 'name', 'address',))
+        return Response(serializer.data)
+
     def create(self, request):
         serializer = RestaurantSerializer(data=request.data)
         if serializer.is_valid():

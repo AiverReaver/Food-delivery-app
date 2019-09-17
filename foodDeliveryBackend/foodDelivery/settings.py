@@ -40,10 +40,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'oauth2_provider',
     'corsheaders',
-    'django_seed',
     'apps.foods',
     'apps.users',
-    'apps.restaurants'
+    'apps.restaurants',
 ]
 
 MIDDLEWARE = [
@@ -56,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'oauth2_provider.middleware.OAuth2TokenMiddleware',
+    'querycount.middleware.QueryCountMiddleware',
 ]
 
 ROOT_URLCONF = 'foodDelivery.urls'
@@ -136,6 +136,10 @@ CORS_ORIGIN_ALLOW_ALL = True
 # CORS_ORIGIN_WHITELIST = (
 #     'localhost:3000',
 # )
+
+QUERYCOUNT = {
+    'DISPLAY_DUPLICATES': 8,
+}
 
 AUTH_USER_MODEL = 'users.User'
 
