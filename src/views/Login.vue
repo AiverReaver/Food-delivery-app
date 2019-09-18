@@ -44,7 +44,7 @@ export default {
   methods: {
     onLoginClicked() {
       axios
-        .post(" http://127.0.0.1:8000/authentication/token/", {
+        .post("http://127.0.0.1:8000/authentication/token/", {
           username: this.username,
           password: this.password
         })
