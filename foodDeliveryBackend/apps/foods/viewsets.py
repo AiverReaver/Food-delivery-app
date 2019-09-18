@@ -11,13 +11,18 @@ class FoodCategoryViewSet(viewsets.ModelViewSet):
     queryset = FoodCategory.objects.all()
     serializer_class = FoodCategorySerializer
 
-    def create(self, request, *args, **kwargs):
+    def create(self, request, restaurant_pk=None, *args, **kwargs):
         serializer = FoodCategorySerializer(data=request.data)
 
         if not serializer.is_valid():
             return Response(serializer.errors)
 
-        serializer.save()
+        if restaurant_pk is None:
+            return Response({'message': 'restaurant required'})
+
+        restaurant = Restaurant.objects.get(pk=restaurant_pk)
+
+        serializer.save(restaurant=restaurant)
 
         return Response(serializer.data)
 
@@ -34,22 +39,22 @@ class FoodViewSet(viewsets.ModelViewSet):
     queryset = Food.objects.all()
     serializer_class = FoodSerializer
 
-    def create(self, request, *args, **kwargs):
+    def create(self, request, restaurant_pk=None, *args, **kwargs):
         serializer = FoodSerializer(data=request.data)
-
-        if not 'category' in request.data:
-            return Response({'message': 'category required'})
-
-        if not 'restaurant' in request.data:
-            return Response({'message': 'restaurant required'})
 
         if not serializer.is_valid():
             return Response(serializer.errors)
 
+        if not 'category' in request.data:
+            return Response({'message': 'category required'})
+
+        if restaurant_pk is None:
+            return Response({'message': 'restaurant required'})
+
         foodCategory = FoodCategory.objects.get(
             pk=request.data.get('category'))
         restaurant = Restaurant.objects.get(
-            pk=request.data.get('restaurant'))
+            pk=restaurant_pk)
         serializer.save(category=foodCategory, restaurant=restaurant)
 
         return Response(serializer.data)

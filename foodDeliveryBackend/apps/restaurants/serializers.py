@@ -6,7 +6,7 @@ from apps.foods.models import FoodCategory
 
 class RestaurantSerializer(serializers.ModelSerializer):
 
-    categories = FoodCategorySerializer(many=True)
+    categories = FoodCategorySerializer(many=True, read_only=True)
 
     def __init__(self, *args, **kwargs):
         # initialize fields

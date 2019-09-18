@@ -17,11 +17,12 @@ class RestaurantViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def create(self, request):
-        serializer = RestaurantSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(user=request.user)
-        else:
+        serializer = RestaurantSerializer(
+            data=request.data, fields=('id', 'name', 'address',))
+        if not serializer.is_valid():
             return Response(serializer.errors)
+
+        serializer.save(user=request.user)
 
         return Response(serializer.data)
 

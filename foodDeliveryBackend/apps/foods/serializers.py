@@ -14,7 +14,7 @@ class FoodSerializer(serializers.ModelSerializer):
 
 
 class FoodCategorySerializer(serializers.ModelSerializer):
-    foods = FoodSerializer(many=True)
+    foods = FoodSerializer(many=True, read_only=True)
 
     def create(self, validated_data):
         return FoodCategory.objects.create(**validated_data)
