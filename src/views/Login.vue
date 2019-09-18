@@ -1,21 +1,33 @@
 <template>
-  <sui-grid :centered="true">
-    <sui-grid-row>
-      <sui-form @submit.prevent="onLoginClicked">
-        <h2 is="sui-header">Login</h2>
-        <sui-grid-column>
-          <sui-form-field>
-            <input placeholder="Username" v-model="username" />
-          </sui-form-field>
+  <div class="ui middle aligned centered aligned grid">
+    <div class="column">
+      <h2 class="ui image header">
+        <div class="content">Log-in to your account</div>
+      </h2>
+      <form class="ui large form" @submit.prevent="onLoginClicked">
+        <div class="ui stacked segment">
+          <div class="field">
+            <div class="ui left icon input">
+              <i class="user icon"></i>
+              <input type="text" placeholder="Username" v-model="username" />
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui left icon input">
+              <i class="lock icon"></i>
+              <input type="password" placeholder="Password" v-model="password" />
+            </div>
+          </div>
+          <input type="submit" value="Login" class="ui fluid large teal submit button" />
+        </div>
+      </form>
 
-          <sui-form-field>
-            <input placeholder="Password" type="password" v-model="password" />
-          </sui-form-field>
-          <sui-button type="submit">Login</sui-button>
-        </sui-grid-column>
-      </sui-form>
-    </sui-grid-row>
-  </sui-grid>
+      <div class="ui message">
+        New to us?
+        <router-link to="/register">Sign Up</router-link>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
