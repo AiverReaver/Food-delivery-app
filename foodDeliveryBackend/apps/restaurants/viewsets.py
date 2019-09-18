@@ -3,6 +3,7 @@ from .models import Restaurant
 from .serializers import RestaurantSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.decorators import action
 
 
 class RestaurantViewSet(viewsets.ModelViewSet):
@@ -11,7 +12,13 @@ class RestaurantViewSet(viewsets.ModelViewSet):
     serializer_class = RestaurantSerializer
 
     def list(self, request):
-        queryset = Restaurant.objects.all()
+
+        if request.query_params == {}:
+            queryset = Restaurant.objects.all()
+        else:
+            query = request.query_params['search']
+            queryset = Restaurant.objects.filter(name__icontains=query)
+
         serializer = RestaurantSerializer(
             queryset, many=True, fields=('id', 'name', 'address',))
         return Response(serializer.data)
