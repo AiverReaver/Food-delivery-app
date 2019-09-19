@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
+import Restaurants from './views/Restaurants.vue'
 import store from './store';
 
 Vue.use(Router)
@@ -11,7 +11,12 @@ export default new Router({
   routes: [{
       path: '/',
       name: 'home',
-      component: Home
+      component: Restaurants
+    },
+    {
+      path: '/restaurants/:id',
+      name: 'restaurant-detail',
+      component: () => import( /* webpackChunkName: "restaurants-detail" */ './views/RestaurantDetail.vue')
     },
     {
       path: '/login',

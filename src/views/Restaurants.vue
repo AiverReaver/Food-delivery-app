@@ -6,22 +6,17 @@
         <i class="search icon"></i>
       </div>
     </div>
-    <div class="ui cards">
-      <div class="card" v-for="restaurant in restaurants" :key="restaurant.id">
-        <div class="content">
-          <div class="header">{{ restaurant.name }}</div>
-
-          <div class="description">{{restaurant.address}}</div>
-        </div>
-      </div>
-    </div>
+    <div class="ui divider"></div>
+    <RestaurantList :restaurants="restaurants" />
   </div>
 </template>
 
 <script>
-import search from "@/components/SearchForm.vue";
 import axios from "axios";
 import { mapState, mapActions } from "vuex";
+
+import RestaurantList from "@/components/RestaurantList.vue";
+import search from "@/components/SearchForm.vue";
 
 export default {
   name: "home",
@@ -31,7 +26,8 @@ export default {
   },
 
   components: {
-    search
+    search,
+    RestaurantList
   },
 
   data() {

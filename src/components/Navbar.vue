@@ -3,13 +3,6 @@
     <router-link class="item" exact-active-class="active" to="/">Home</router-link>
     <router-link class="item" exact-active-class="active" to="/about">About</router-link>
     <div class="right menu">
-      <div class="item">
-        <div class="ui icon input">
-          <input type="text" placeholder="Search..." />
-          <i class="search link icon"></i>
-        </div>
-      </div>
-
       <a class="item" v-if="isLoggedIn" @click="logoutUser">Logout</a>
 
       <router-link v-if="!isLoggedIn" class="item" exact-active-class="active" to="/login">Login</router-link>
