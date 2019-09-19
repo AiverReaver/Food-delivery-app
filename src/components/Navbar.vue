@@ -10,9 +10,9 @@
         </div>
       </div>
 
-      <button class="item" v-if="isLoggedIn()" @click="logout">Logout</button>
-      <router-link v-if="!isLoggedIn()" class="item" exact-active-class="active" to="/login">Login</router-link>
-      <div class="item" v-if="!isLoggedIn()">
+      <button class="item" v-if="isLoggedIn" @click="logoutUser">Logout</button>
+      <router-link v-if="!isLoggedIn" class="item" exact-active-class="active" to="/login">Login</router-link>
+      <div class="item" v-if="!isLoggedIn">
         <router-link class="ui primary button" exact-active-class="active" to="/register">SignUp</router-link>
       </div>
     </div>
@@ -21,22 +21,13 @@
 
 <script>
 import axios from "axios";
+import { mapActions, mapGetters } from "vuex";
 export default {
   methods: {
-    isLoggedIn() {
-      return localStorage.getItem("token") !== "";
-    },
-
-    logout() {
-      axios
-        .post("http://127.0.0.1:8000/authentication/token/revoke/", {
-          token: localStorage.getItem("token")
-        })
-        .then(res => {
-          localStorage.removeItem("token");
-          localStorage.removeItem("refresh_token");
-        });
-    }
+    ...mapActions(["logoutUser"])
+  },
+  computed: {
+    ...mapGetters(["isLoggedIn"])
   }
 };
 </script>

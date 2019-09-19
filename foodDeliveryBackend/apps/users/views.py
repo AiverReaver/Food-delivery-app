@@ -23,7 +23,7 @@ def register(request):
     # Validate the data
     if serializer.is_valid():
         # If it is valid, save the data (creates a user).
-        serializer.save()
+        serializer.save(email=request.data['email'])
         # Then we get a token for the created user.
         # This could be done differentley
         r = requests.post(BASE_URL + 'token/',

@@ -4,30 +4,30 @@
       <h2 class="ui image header">
         <div class="content">Register for new account</div>
       </h2>
-      <form class="ui large form" @submit.prevent="onRegisterClicked">
+      <form class="ui large form" @submit.prevent="registerUser(user)">
         <div class="ui stacked segment">
           <div class="field">
             <div class="ui left icon input">
               <i class="user icon"></i>
-              <input type="text" placeholder="Username" v-model="username" />
+              <input type="text" placeholder="Username" v-model="user.username" />
             </div>
           </div>
           <div class="field">
             <div class="ui left icon input">
               <i class="user icon"></i>
-              <input type="text" placeholder="email" v-model="email" />
+              <input type="text" placeholder="email" v-model="user.email" />
             </div>
           </div>
           <div class="field">
             <div class="ui left icon input">
               <i class="lock icon"></i>
-              <input type="password" placeholder="Password" v-model="password" />
+              <input type="password" placeholder="Password" v-model="user.password" />
             </div>
           </div>
           <div class="field">
             <div class="ui left icon input">
               <i class="lock icon"></i>
-              <input type="text" placeholder="Confirm password" v-model="confirmPassword" />
+              <input type="text" placeholder="Confirm password" v-model="user.confirmPassword" />
             </div>
           </div>
           <input type="submit" value="Register" class="ui fluid large teal submit button" />
@@ -43,29 +43,15 @@
 </template>
 
 <script>
-import axios from "axios";
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      username: "",
-      email: "",
-      password: "",
-      confirmPassword: ""
+      user: { username: "", email: "", password: "", confirmPassword: "" }
     };
   },
   methods: {
-    onRegisterClicked() {
-      axios
-        .post(" http://127.0.0.1:8000/authentication/register/", {
-          username: this.username,
-          email: this.email,
-          password: this.password
-        })
-        .then(({ data }) => {
-          localStorage.setItem("token", data.access_token);
-          localStorage.setItem("refresh_token", data.refresh_token);
-        });
-    }
+    ...mapActions(["registerUser"])
   }
 };
 </script>

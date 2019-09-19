@@ -4,18 +4,18 @@
       <h2 class="ui image header">
         <div class="content">Log-in to your account</div>
       </h2>
-      <form class="ui large form" @submit.prevent="onLoginClicked">
+      <form class="ui large form" @submit.prevent="loginUser(user)">
         <div class="ui stacked segment">
           <div class="field">
             <div class="ui left icon input">
               <i class="user icon"></i>
-              <input type="text" placeholder="Username" v-model="username" />
+              <input type="text" placeholder="Username" v-model="user.username" />
             </div>
           </div>
           <div class="field">
             <div class="ui left icon input">
               <i class="lock icon"></i>
-              <input type="password" placeholder="Password" v-model="password" />
+              <input type="password" placeholder="Password" v-model="user.password" />
             </div>
           </div>
           <input type="submit" value="Login" class="ui fluid large teal submit button" />
@@ -31,28 +31,17 @@
 </template>
 
 <script>
-import axios from "axios";
+import { mapActions } from "vuex";
 export default {
   props: {},
   data() {
     return {
-      username: "",
-      password: ""
+      user: { username: "", password: "" }
     };
   },
 
   methods: {
-    onLoginClicked() {
-      axios
-        .post("http://127.0.0.1:8000/authentication/token/", {
-          username: this.username,
-          password: this.password
-        })
-        .then(({ data }) => {
-          localStorage.setItem("token", data.access_token);
-          localStorage.setItem("refresh_token", data.refresh_token);
-        });
-    }
+    ...mapActions(["loginUser"])
   }
 };
 </script>

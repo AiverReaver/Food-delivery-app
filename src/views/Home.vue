@@ -21,38 +21,37 @@
 <script>
 import search from "@/components/SearchForm.vue";
 import axios from "axios";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "home",
 
   created() {
-    this.getRastaurants();
+    console.log("as");
+    this.getRestaurants();
   },
+
   components: {
     search
   },
+
   data() {
     return {
-      restaurants: [],
       searchQuery: ""
     };
   },
-  methods: {
-    getRastaurants(search) {
-      axios
-        .get(`http://127.0.0.1:8000/api/restaurants/`, {
-          params: {
-            search
-          }
-        })
-        .then(({ data }) => {
-          this.restaurants = data;
-        });
-    }
+
+  computed: {
+    ...mapState(["restaurants"])
   },
+
+  methods: {
+    ...mapActions(["getRestaurants"])
+  },
+
   watch: {
     searchQuery() {
-      this.getRastaurants(this.searchQuery);
+      this.getRestaurants(this.searchQuery);
     }
   }
 };

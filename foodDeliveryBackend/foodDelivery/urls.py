@@ -20,7 +20,7 @@ from .routers import router, restaurant_router
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
-    path('authentication/', include('apps.users.urls')),
+    path('api/authentication/', include('apps.users.urls')),
     path('api/', include(router.urls)),
     path('api/', include(restaurant_router.urls))
 ]
