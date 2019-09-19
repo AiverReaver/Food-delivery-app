@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Login from './views/Login.vue'
 import Register from './views/Register.vue'
+import store from './store';
 
 Vue.use(Router)
 
@@ -25,12 +26,26 @@ export default new Router({
     {
       path: '/login',
       name: 'login',
-      component: Login
+      component: Login,
+      beforeEnter: (to, from, next) => {
+
+        if (store.getters.isLoggedIn)
+          next('/')
+        else
+          next()
+      }
     },
     {
       path: '/register',
       name: 'register',
-      component: Register
+      component: Register,
+      beforeEnter: (to, from, next) => {
+
+        if (store.getters.isLoggedIn)
+          next('/')
+        else
+          next()
+      }
     }
   ]
 })

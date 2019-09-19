@@ -46,33 +46,20 @@ export default new Vuex.Store({
       localStorage.setItem("token", data.access_token);
       localStorage.setItem("refresh_token", data.refresh_token);
     },
-    async loginUser({
-      dispatch
-    }, user) {
-      const {
-        data
-      } = await foodDelivery.post('/authentication/token/', user);
-      dispatch('setTokens', data);
+    loginUser(context, user) {
+      return foodDelivery.post('/authentication/token/', user);
     },
-    async registerUser({
-      dispatch
-    }, user) {
-      const {
-        data
-      } = await foodDelivery.post('/authentication/register/', user);
-      dispatch('setTokens', data);
+    registerUser(context, user) {
+      return foodDelivery.post('/authentication/register/', user);
     },
     async logoutUser({
       commit,
       state
     }) {
-      const {
-        data
-      } = await foodDelivery.post('/authentication/token/revoke/', {
+      await foodDelivery.post('/authentication/token/revoke/', {
         token: state.token
       });
 
-      console.log(data.message);
       commit('setToken', null)
       commit('setRefreshToken', null)
       localStorage.removeItem("token");

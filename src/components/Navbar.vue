@@ -10,7 +10,8 @@
         </div>
       </div>
 
-      <button class="item" v-if="isLoggedIn" @click="logoutUser">Logout</button>
+      <a class="item" v-if="isLoggedIn" @click="logoutUser">Logout</a>
+
       <router-link v-if="!isLoggedIn" class="item" exact-active-class="active" to="/login">Login</router-link>
       <div class="item" v-if="!isLoggedIn">
         <router-link class="ui primary button" exact-active-class="active" to="/register">SignUp</router-link>

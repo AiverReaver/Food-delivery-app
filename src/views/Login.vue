@@ -4,7 +4,7 @@
       <h2 class="ui image header">
         <div class="content">Log-in to your account</div>
       </h2>
-      <form class="ui large form" @submit.prevent="loginUser(user)">
+      <form class="ui large form" @submit.prevent="onLoginClicked">
         <div class="ui stacked segment">
           <div class="field">
             <div class="ui left icon input">
@@ -33,7 +33,6 @@
 <script>
 import { mapActions } from "vuex";
 export default {
-  props: {},
   data() {
     return {
       user: { username: "", password: "" }
@@ -41,7 +40,17 @@ export default {
   },
 
   methods: {
-    ...mapActions(["loginUser"])
+    ...mapActions(["loginUser", "setTokens"]),
+    onLoginClicked() {
+      this.loginUser(this.user)
+        .then(({ data }) => {
+          this.$router.push("/");
+          this.setTokens(data);
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
   }
 };
 </script>

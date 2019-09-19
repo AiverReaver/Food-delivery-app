@@ -27,7 +27,6 @@ export default {
   name: "home",
 
   created() {
-    console.log("as");
     this.getRestaurants();
   },
 

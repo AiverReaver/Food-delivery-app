@@ -4,7 +4,7 @@
       <h2 class="ui image header">
         <div class="content">Register for new account</div>
       </h2>
-      <form class="ui large form" @submit.prevent="registerUser(user)">
+      <form class="ui large form" @submit.prevent="onRegisterClicked">
         <div class="ui stacked segment">
           <div class="field">
             <div class="ui left icon input">
@@ -51,7 +51,17 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["registerUser"])
+    ...mapActions(["registerUser", "setTokens"]),
+    onRegisterClicked() {
+      this.registerUser(this.user)
+        .then(({ data }) => {
+          this.$router.push("/");
+          this.setTokens(data);
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
   }
 };
 </script>
