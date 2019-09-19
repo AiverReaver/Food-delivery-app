@@ -4,7 +4,8 @@ from rest_framework.permissions import AllowAny
 
 import requests
 
-from .serializers import CreateUserSerializer
+from .models import User
+from .serializers import UserSerializer
 
 
 CLIENT_ID = 'vKAq3xHRIDpKEhiVEeEfEQpzrK6GjUV9r2rMaxJf'
@@ -19,22 +20,23 @@ def register(request):
     Registers user to the server
     '''
     # Put the data from the request into the serializer
-    serializer = CreateUserSerializer(data=request.data)
+    serializer = UserSerializer(data=request.data)
     # Validate the data
     if serializer.is_valid():
         # If it is valid, save the data (creates a user).
         serializer.save(email=request.data['email'])
         # Then we get a token for the created user.
         # This could be done differentley
-        r = requests.post(BASE_URL + 'token/',
-                          data={
-                              'grant_type': 'password',
-                              'username': request.data['username'],
-                              'password': request.data['password'],
-                              'client_id': CLIENT_ID,
-                              'client_secret': CLIENT_SECRET,
-                          },
-                          )
+        r = requests.post(
+            BASE_URL + 'token/',
+            data={
+                'grant_type': 'password',
+                'username': request.data['username'],
+                'password': request.data['password'],
+                'client_id': CLIENT_ID,
+                'client_secret': CLIENT_SECRET,
+            },
+        )
         return Response(r.json())
     return Response(serializer.errors)
 
@@ -45,6 +47,7 @@ def token(request):
     '''
     Gets tokens with username and password
     '''
+
     r = requests.post(
         BASE_URL + 'token/',
         data={
@@ -58,10 +61,12 @@ def token(request):
 
     res = r.json()
 
-    if 'error' in res:
-        return Response(res, status=401)
+    user = User.objects.filter(
+        username__exact=request.data['username']).first()
 
-    return Response(res)
+    res['user'] = UserSerializer(user).data
+
+    return Response(res, status=r.status_code)
 
 
 @api_view(['POST'])

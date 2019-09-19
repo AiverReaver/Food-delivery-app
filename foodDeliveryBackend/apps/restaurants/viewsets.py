@@ -24,8 +24,12 @@ class RestaurantViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def create(self, request):
+        if not request.user.is_restaurant:
+            return Response({'message': 'unauthorized'}, 401)
+
         serializer = RestaurantSerializer(
             data=request.data, fields=('id', 'name', 'address',))
+
         if not serializer.is_valid():
             return Response(serializer.errors)
 

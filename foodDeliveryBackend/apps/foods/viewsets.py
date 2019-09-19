@@ -12,6 +12,10 @@ class FoodCategoryViewSet(viewsets.ModelViewSet):
     serializer_class = FoodCategorySerializer
 
     def create(self, request, restaurant_pk=None, *args, **kwargs):
+
+        if not request.user.is_restaurant:
+            return Response({'message': 'unauthorized'}, 401)
+
         serializer = FoodCategorySerializer(data=request.data)
 
         if not serializer.is_valid():
@@ -40,6 +44,10 @@ class FoodViewSet(viewsets.ModelViewSet):
     serializer_class = FoodSerializer
 
     def create(self, request, restaurant_pk=None, *args, **kwargs):
+
+        if not request.user.is_restaurant:
+            return Response({'message': 'unauthorized'}, 401)
+
         serializer = FoodSerializer(data=request.data)
 
         if not serializer.is_valid():
