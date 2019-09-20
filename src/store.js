@@ -15,12 +15,14 @@ export default new Vuex.Store({
     setRestaurants(state, restaurants) {
       state.restaurants = restaurants;
     },
+
     setToken(state, token) {
       state.token = token;
     },
+
     setRefreshToken(state, token) {
       state.refreshToken = token;
-    }
+    },
   },
   actions: {
     async getRestaurants({
@@ -37,6 +39,11 @@ export default new Vuex.Store({
 
       commit('setRestaurants', data);
     },
+
+    getRestaurant(context, id) {
+      return foodDelivery.get(`/restaurants/${id}`);
+    },
+
     setTokens({
       commit
     }, data) {
@@ -46,12 +53,15 @@ export default new Vuex.Store({
       localStorage.setItem("token", data.access_token);
       localStorage.setItem("refresh_token", data.refresh_token);
     },
+
     loginUser(context, user) {
       return foodDelivery.post('/authentication/token/', user);
     },
+
     registerUser(context, user) {
       return foodDelivery.post('/authentication/register/', user);
     },
+
     async logoutUser({
       commit,
       state
