@@ -56,6 +56,11 @@ def token(request):
     '''
     Gets tokens with username and password
     '''
+    user = User.objects.filter(
+        username__exact=request.data['username']).first()
+
+    if user is None:
+        return Response({'message': 'unauthorized'}, status=401)
 
     r = requests.post(
         BASE_URL + 'token/',

@@ -8,7 +8,9 @@ router.register('restaurants', RestaurantViewSet, base_name='restaurants')
 
 restaurant_router = routers.NestedDefaultRouter(
     router, 'restaurants', lookup='restaurant')
-
 restaurant_router.register(
     'categories', FoodCategoryViewSet, base_name='categories')
-restaurant_router.register('foods', FoodViewSet, base_name='foods')
+
+category_router = routers.NestedDefaultRouter(
+    restaurant_router, 'categories', lookup='category')
+category_router.register('foods', FoodViewSet, base_name='foods')

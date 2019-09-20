@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
@@ -43,7 +43,20 @@ class FoodViewSet(viewsets.ModelViewSet):
     queryset = Food.objects.all()
     serializer_class = FoodSerializer
 
-    def create(self, request, restaurant_pk=None, *args, **kwargs):
+    def list(self, request, category_pk=None, restaurant_pk=None):
+        if category_pk is not None and restaurant_pk is not None:
+            queryset = Food.objects.filter(
+                category_id=category_pk, restaurant_id=restaurant_pk)
+        elif restaurant_pk is not None and category_pk is None:
+            queryset = Food.objects.filter(restaurant_id=restaurant_pk)
+        else:
+            queryset = Food.objects.filter(category_id=category_pk)
+
+        serializer = FoodSerializer(queryset, many=True)
+
+        return Response(serializer.data)
+
+    def create(self, request, restaurant_pk=None, category_pk=None, *args, **kwargs):
 
         if not request.user.is_restaurant:
             return Response({'message': 'unauthorized'}, 401)
@@ -53,14 +66,8 @@ class FoodViewSet(viewsets.ModelViewSet):
         if not serializer.is_valid():
             return Response(serializer.errors)
 
-        if not 'category' in request.data:
-            return Response({'message': 'category required'})
-
-        if restaurant_pk is None:
-            return Response({'message': 'restaurant required'})
-
         foodCategory = FoodCategory.objects.get(
-            pk=request.data.get('category'))
+            pk=category_pk)
         restaurant = Restaurant.objects.get(
             pk=restaurant_pk)
         serializer.save(category=foodCategory, restaurant=restaurant)

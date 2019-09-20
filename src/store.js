@@ -2,7 +2,6 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import foodDelivery from './api';
 
-
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -35,8 +34,7 @@ export default new Vuex.Store({
     }, search) {
       const {
         data
-      } =
-      await foodDelivery.get('/restaurants/', {
+      } = await foodDelivery.get('/restaurants/', {
         params: {
           search
         }
@@ -54,24 +52,34 @@ export default new Vuex.Store({
     },
 
     createCategory(context, payload) {
-      console.log(payload);
-      return foodDelivery.post(`/restaurants/${payload.id}/categories/`, {
-        name: payload.category
-      });
+      return foodDelivery.post(
+        `/restaurants/${payload.restaurant_id}/categories/`, {
+          name: payload.category
+        }
+      );
+    },
+
+    createFood(context, payload) {
+      return foodDelivery.post(
+        `/restaurants/${payload.restaurant_id}/categories/${payload.category_id}/foods/`,
+        payload.food
+      );
     },
 
     setTokens({
       commit
     }, data) {
-      foodDelivery.defaults.headers['Authorization'] = `Bearer ${data.access_token}`;
+      foodDelivery.defaults.headers[
+        'Authorization'
+      ] = `Bearer ${data.access_token}`;
 
-      commit('setRole', data.user_role)
-      commit('setToken', data.access_token)
-      commit('setRefreshToken', data.refresh_token)
+      commit('setRole', data.user_role);
+      commit('setToken', data.access_token);
+      commit('setRefreshToken', data.refresh_token);
 
-      localStorage.setItem("token", data.access_token);
-      localStorage.setItem("refresh_token", data.refresh_token);
-      localStorage.setItem("role", data.user_role);
+      localStorage.setItem('token', data.access_token);
+      localStorage.setItem('refresh_token', data.refresh_token);
+      localStorage.setItem('role', data.user_role);
     },
 
     loginUser(context, user) {
@@ -90,11 +98,12 @@ export default new Vuex.Store({
         token: state.token
       });
 
-      commit('setToken', null)
-      commit('setRefreshToken', null)
-      localStorage.removeItem("token");
-      localStorage.removeItem("refresh_token");
-      localStorage.removeItem("role")
+      commit('setRole', 'customer');
+      commit('setToken', null);
+      commit('setRefreshToken', null);
+      localStorage.removeItem('token');
+      localStorage.removeItem('refresh_token');
+      localStorage.removeItem('role');
     }
   },
 
