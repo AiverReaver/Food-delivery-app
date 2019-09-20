@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="ui header" v-hasRole="'restaurant'">{{restaurant.name}}</h1>
+    <h1 class="ui header">{{restaurant.name}}</h1>
     <p>{{restaurant.address}}</p>
     <div class="ui grid" v-if="categories.length > 0">
       <div class="four wide column">
@@ -12,6 +12,16 @@
             :key="category.id"
             @click="changeCategory(category)"
           >{{category.name}}</a>
+          <a class="item" v-hasRole="'restaurant'">
+            <div>
+              <div class="ui action input">
+                <input type="text" placeholder="Add Category" v-model="category" />
+                <button class="ui icon button" @click="addCategory">
+                  <i class="plus icon"></i>
+                </button>
+              </div>
+            </div>
+          </a>
         </div>
       </div>
       <div class="twelve wide stretched column">
@@ -49,14 +59,23 @@ export default {
     return {
       restaurant: {},
       categories: [],
-      selectedCategory: { foods: [] }
+      selectedCategory: { foods: [] },
+      category: ""
     };
   },
   methods: {
-    ...mapActions(["getRestaurant"]),
+    ...mapActions(["getRestaurant", "createCategory"]),
 
     changeCategory(category) {
       this.selectedCategory = category;
+    },
+    addCategory() {
+      this.createCategory({
+        id: this.restaurant.id,
+        category: this.category
+      }).then(({ data }) => {
+        this.categories.push(data);
+      });
     }
   }
 };

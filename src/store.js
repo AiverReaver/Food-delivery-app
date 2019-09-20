@@ -53,6 +53,13 @@ export default new Vuex.Store({
       return foodDelivery.get(`/restaurants/${id}`);
     },
 
+    createCategory(context, payload) {
+      console.log(payload);
+      return foodDelivery.post(`/restaurants/${payload.id}/categories/`, {
+        name: payload.category
+      });
+    },
+
     setTokens({
       commit
     }, data) {
