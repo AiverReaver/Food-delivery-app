@@ -1,13 +1,14 @@
 <template>
   <div>
-    <h1 class="ui header">{{restaurant.name}}</h1>
-    <div class="ui grid">
+    <h1 class="ui header" v-hasRole="'restaurant'">{{restaurant.name}}</h1>
+    <p>{{restaurant.address}}</p>
+    <div class="ui grid" v-if="categories.length > 0">
       <div class="four wide column">
         <div class="ui vertical fluid tabular menu">
           <a
+            v-for="category in categories"
             class="item"
             :class="{active: selectedCategory.id === category.id}"
-            v-for="category in restaurant.categories"
             :key="category.id"
             @click="changeCategory(category)"
           >{{category.name}}</a>
@@ -38,13 +39,17 @@ export default {
   created() {
     this.getRestaurant(this.$route.params.id).then(({ data }) => {
       this.restaurant = data;
-      this.selectedCategory = data.categories[0];
+      if (data.categories !== undefined) {
+        this.categories = data.categories;
+        this.selectedCategory = data.categories[0];
+      }
     });
   },
   data() {
     return {
-      restaurant: { categories: [] },
-      selectedCategory: {}
+      restaurant: {},
+      categories: [],
+      selectedCategory: { foods: [] }
     };
   },
   methods: {

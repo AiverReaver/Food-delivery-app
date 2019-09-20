@@ -41,6 +41,18 @@ export default new Router({
         else
           next()
       }
+    },
+    {
+      path: '/create',
+      name: 'create',
+      component: () => import( /* webpackChunkName: "create" */ './views/RestaurantCreate.vue'),
+      beforeEnter: (to, from, next) => {
+
+        if (store.getters.getLoggedInUserRole === 'restaurant')
+          next()
+        else
+          next('/')
+      }
     }
   ]
 })

@@ -9,7 +9,8 @@ export default new Vuex.Store({
   state: {
     restaurants: [],
     token: localStorage.getItem('token'),
-    refreshToken: localStorage.getItem('refresh_token')
+    refreshToken: localStorage.getItem('refresh_token'),
+    role: localStorage.getItem('role')
   },
   mutations: {
     setRestaurants(state, restaurants) {
@@ -23,6 +24,10 @@ export default new Vuex.Store({
     setRefreshToken(state, token) {
       state.refreshToken = token;
     },
+
+    setRole(state, role) {
+      state.role = role;
+    }
   },
   actions: {
     async getRestaurants({
@@ -40,6 +45,10 @@ export default new Vuex.Store({
       commit('setRestaurants', data);
     },
 
+    createRestaurant(context, restaurant) {
+      return foodDelivery.post('/restaurants/', restaurant);
+    },
+
     getRestaurant(context, id) {
       return foodDelivery.get(`/restaurants/${id}`);
     },
@@ -48,10 +57,14 @@ export default new Vuex.Store({
       commit
     }, data) {
       foodDelivery.defaults.headers['Authorization'] = `Bearer ${data.access_token}`;
+
+      commit('setRole', data.user_role)
       commit('setToken', data.access_token)
       commit('setRefreshToken', data.refresh_token)
+
       localStorage.setItem("token", data.access_token);
       localStorage.setItem("refresh_token", data.refresh_token);
+      localStorage.setItem("role", data.user_role);
     },
 
     loginUser(context, user) {
@@ -74,11 +87,16 @@ export default new Vuex.Store({
       commit('setRefreshToken', null)
       localStorage.removeItem("token");
       localStorage.removeItem("refresh_token");
+      localStorage.removeItem("role")
     }
   },
+
   getters: {
     isLoggedIn(state) {
       return state.token !== null;
+    },
+    getLoggedInUserRole(state) {
+      return state.role;
     }
   }
 });
