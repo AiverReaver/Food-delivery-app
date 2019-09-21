@@ -28,7 +28,6 @@ export default {
     ...mapActions(["createRestaurant"]),
     onCreateClicked() {
       this.createRestaurant(this.restaurant).then(({ data }) => {
-        console.log(data);
         this.$router.push(`/restaurants/${data.id}`);
       });
     }

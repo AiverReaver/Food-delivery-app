@@ -16,7 +16,6 @@ import axios from "axios";
 import { mapState, mapActions } from "vuex";
 
 import RestaurantList from "@/components/RestaurantList.vue";
-import search from "@/components/SearchForm.vue";
 
 export default {
   name: "home",
@@ -26,7 +25,6 @@ export default {
   },
 
   components: {
-    search,
     RestaurantList
   },
 
