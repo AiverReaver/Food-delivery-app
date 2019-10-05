@@ -87,7 +87,11 @@ export default new Vuex.Store({
     },
 
     registerUser(context, user) {
-      return foodDelivery.post('/authentication/register/', user);
+      return foodDelivery.post('/authentication/register/customer', user);
+    },
+
+    registerRestaurant(context, user) {
+      return foodDelivery.post('/authentication/register/restaurant', user);
     },
 
     async logoutUser({

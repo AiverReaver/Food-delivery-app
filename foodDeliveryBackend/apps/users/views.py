@@ -15,39 +15,14 @@ BASE_URL = 'http://127.0.0.1:8000/o/'
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
-def register(request):
-    '''
-    Registers user to the server
-    '''
-    # Put the data from the request into the serializer
-    serializer = CreateUserSerializer(data=request.data)
-    # Validate the data
-    if serializer.is_valid():
-        # If it is valid, save the data (creates a user).
-        serializer.save(email=request.data['email'])
-        # Then we get a token for the created user.
-        # This could be done differentley
-        r = requests.post(
-            BASE_URL + 'token/',
-            data={
-                'grant_type': 'password',
-                'username': request.data['username'],
-                'password': request.data['password'],
-                'client_id': CLIENT_ID,
-                'client_secret': CLIENT_SECRET,
-            },
-        )
+def register_customer(request):
+    return create_user(request, False)
 
-        res = r.json()
 
-        user = User.objects.filter(
-            username__exact=request.data['username']).first()
-
-        res['user_role'] = 'restaurant' if user.is_restaurant else 'customer'
-
-        return Response(res)
-
-    return Response(serializer.errors)
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def register_restaurant(request):
+    return create_user(request, True)
 
 
 @api_view(['POST'])
@@ -120,3 +95,33 @@ def revoke_token(request):
         return Response({'message': 'token revoked'}, r.status_code)
     # Return the error if it goes badly
     return Response(r.json(), r.status_code)
+
+
+def create_user(request, is_restaurant):
+    # Put the data from the request into the serializer
+    serializer = CreateUserSerializer(data=request.data)
+    # Validate the data
+    if serializer.is_valid():
+        # If it is valid, save the data (creates a user).
+        serializer.save(
+            email=request.data['email'], is_restaurant=is_restaurant)
+        # Then we get a token for the created user.
+        # This could be done differentley
+        r = requests.post(
+            BASE_URL + 'token/',
+            data={
+                'grant_type': 'password',
+                'username': request.data['username'],
+                'password': request.data['password'],
+                'client_id': CLIENT_ID,
+                'client_secret': CLIENT_SECRET,
+            },
+        )
+
+        res = r.json()
+
+        res['user_role'] = 'restaurant'
+
+        return Response(res)
+
+    return Response(serializer.errors)
